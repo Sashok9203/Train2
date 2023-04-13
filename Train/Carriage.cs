@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,7 +13,7 @@ namespace Task1
         Freight,
         Сompartment
     }
-    struct Carriage
+    class Carriage : IComparable<Carriage>, ICloneable, IEquatable<Carriage>
     {
         private uint passengers;
         
@@ -49,5 +50,21 @@ namespace Task1
             return sb.ToString();
         }
 
+        public int CompareTo(Carriage? other) => Type.CompareTo(other?.Type );
+
+        public object Clone() => (Carriage)this.MemberwiseClone();
+
+        public override bool Equals(object? obj) => obj is Carriage carriage && Equals(carriage);
+        public override int GetHashCode() => HashCode.Combine(passengers, Seats, Type, Number, FreeSeats, Passenger);
+        public bool Equals(Carriage? other)
+        {
+            return other != null &&
+                   passengers == other.passengers &&
+                   Seats == other.Seats &&
+                   Type == other.Type &&
+                   Number == other.Number &&
+                   FreeSeats == other.FreeSeats &&
+                   Passenger == other.Passenger;
+        }
     }
 }

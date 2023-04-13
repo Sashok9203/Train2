@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -14,7 +15,7 @@ namespace Task1
         Freight,
     }
 
-    internal class Train
+    internal class Train : IEnumerable<Carriage>, IComparable<Train>,ICloneable
     {
         private Dictionary<uint,Carriage> carriages;
         private DateTime arrival;
@@ -125,12 +126,25 @@ namespace Task1
             }
         }
 
-            public void PassDisembarkation(uint carriageNumber,  uint passCount = 0)
+        public void PassDisembarkation(uint carriageNumber,  uint passCount = 0)
         {
             if (!carriages.TryGetValue(carriageNumber,out Carriage tmp)) throw new Exception($" There is no carriage with number {carriageNumber}");
             if (passCount == 0 || passCount > tmp.Passenger) tmp.Passenger = 0;
             else tmp.Passenger -= passCount;
             carriages[carriageNumber] = tmp;    
+        }
+
+        
+        public IEnumerator<Carriage> GetEnumerator() => carriages.Values.GetEnumerator();
+        IEnumerator IEnumerable.GetEnumerator() => carriages.GetEnumerator();
+
+        public int CompareTo(Train? other) => carriages.Count.CompareTo(other?.carriages.Count);
+
+        public object Clone()
+        {
+            Train tmp = (Train)this.MemberwiseClone();
+            tmp.carriages = new Dictionary<uint, Carriage>(carriages);
+            return tmp;
         }
     }
 }

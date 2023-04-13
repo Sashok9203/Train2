@@ -22,8 +22,15 @@
                 }
             }
             catch (Exception exc) { Console.WriteLine(exc.Message); }
-           
-            Console.WriteLine(train?.ToString() ?? " No train data....");
+
+            //Console.WriteLine(train?.ToString() ?? " No train data....");
+
+            Train train2 = (Train)train.Clone();
+
+            foreach (Carriage item in train2)
+            {
+                Console.WriteLine(item.ToString());
+            }
         }
     }
 }
