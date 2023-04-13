@@ -55,16 +55,12 @@ namespace Task1
         public object Clone() => (Carriage)this.MemberwiseClone();
 
         public override bool Equals(object? obj) => obj is Carriage carriage && Equals(carriage);
-        public override int GetHashCode() => HashCode.Combine(passengers, Seats, Type, Number, FreeSeats, Passenger);
+        public override int GetHashCode() => HashCode.Combine( Type, Number);
         public bool Equals(Carriage? other)
         {
             return other != null &&
-                   passengers == other.passengers &&
-                   Seats == other.Seats &&
                    Type == other.Type &&
-                   Number == other.Number &&
-                   FreeSeats == other.FreeSeats &&
-                   Passenger == other.Passenger;
+                   Number == other.Number;
         }
     }
 }

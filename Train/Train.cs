@@ -15,7 +15,7 @@ namespace Task1
         Freight,
     }
 
-    internal class Train : IEnumerable<Carriage>, IComparable<Train>,ICloneable
+    internal class Train : IEnumerable<Carriage>, IComparable<Train>,ICloneable, IEquatable<Train?>
     {
         private Dictionary<uint,Carriage> carriages;
         private DateTime arrival;
@@ -146,5 +146,21 @@ namespace Task1
             tmp.carriages = new Dictionary<uint, Carriage>(carriages);
             return tmp;
         }
+
+        public override bool Equals(object? obj) => obj is Train train && Equals(train);
+
+
+        public bool Equals(Train? other)
+        {
+            return other is not null &&
+                   Type == other.Type &&
+                   CarriageCount == other.CarriageCount;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Type, CarriageCount);
+        }
+
     }
 }
